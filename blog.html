@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog — Learn Tech With Hirdesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a14;
+    --surface: #0d1a2d;
+    --surface2: #112240;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e2eaf7;
+    --muted: #7a90b0;
+    --border: rgba(0,212,255,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* === CURSOR === */
+  .cursor { width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:screen; }
+  .cursor-ring { width:36px;height:36px;border:1.5px solid rgba(0,212,255,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.18s;mix-blend-mode:screen; }
+
+  /* === NAV === */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:1000;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 5%;
+    background:rgba(5,10,20,0.92);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo {
+    font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:800;
+    color:var(--text); text-decoration:none; display:flex; align-items:center; gap:10px;
+  }
+  .nav-logo-icon {
+    width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:0.82rem;font-weight:700;color:white;
+  }
+  .nav-links { display:flex;gap:32px;list-style:none; }
+  .nav-links a {
+    font-size:0.9rem;color:var(--muted);text-decoration:none;letter-spacing:0.02em;
+    transition:color 0.2s; position:relative;
+  }
+  .nav-links a.active, .nav-links a:hover { color:var(--text); }
+  .nav-links a.active::after {
+    content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px;
+    background:var(--accent);
+  }
+  .nav-cta {
+    background:transparent;border:1px solid var(--accent);color:var(--accent);
+    font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:9px 22px;
+    border-radius:6px;cursor:pointer;transition:all 0.2s;text-decoration:none;
+  }
+  .nav-cta:hover { background:var(--accent);color:var(--bg);box-shadow:0 0 20px rgba(0,212,255,0.4); }
+  .hamburger { display:none;flex-direction:column;gap:5px;cursor:pointer; }
+  .hamburger span { width:24px;height:2px;background:var(--text);border-radius:2px; }
+
+  /* === PAGE HEADER === */
+  .page-header {
+    padding: 140px 5% 60px;
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .page-header-left {}
+  .breadcrumb {
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--muted);
+    letter-spacing:0.08em; margin-bottom:16px; display:flex; align-items:center; gap:8px;
+  }
+  .breadcrumb a { color:var(--accent); text-decoration:none; }
+  .breadcrumb span { color:var(--muted); }
+  .page-title {
+    font-family:'Syne',sans-serif; font-size:clamp(2rem,5vw,3.5rem);
+    font-weight:800; letter-spacing:-0.03em; line-height:1.1;
+  }
+  .page-title span {
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .page-subtitle { color:var(--muted); font-size:1rem; margin-top:12px; font-weight:300; }
+
+  /* === ADD BLOG BUTTON === */
+  .add-blog-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white; font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700;
+    border-radius:10px; border:none; cursor:pointer;
+    transition:all 0.25s; box-shadow:0 4px 30px rgba(0,212,255,0.25);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .add-blog-btn:hover {
+    transform:translateY(-2px); box-shadow:0 8px 40px rgba(0,212,255,0.4);
+  }
+  .add-blog-btn .plus { font-size:1.3rem; font-weight:400; line-height:1; }
+
+  /* === FILTER BAR === */
+  .filter-bar {
+    position:relative;z-index:1;
+    padding:0 5% 32px;
+    max-width:1200px;margin:0 auto;
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  }
+  .filter-chip {
+    padding:7px 18px; background:var(--surface);
+    border:1px solid var(--border); border-radius:100px;
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem;
+    color:var(--muted); cursor:pointer; transition:all 0.2s;
+    letter-spacing:0.04em;
+  }
+  .filter-chip:hover, .filter-chip.active {
+    background:rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.4); color:var(--accent);
+  }
+  .search-wrap {
+    margin-left:auto; position:relative;
+  }
+  .search-input {
+    padding:8px 16px 8px 36px; background:var(--surface); border:1px solid var(--border);
+    border-radius:100px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.88rem;
+    outline:none; transition:all 0.2s; width:220px;
+  }
+  .search-input:focus { border-color:rgba(0,212,255,0.4); box-shadow:0 0 0 3px rgba(0,212,255,0.08); }
+  .search-input::placeholder { color:var(--muted); }
+  .search-icon { position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.9rem;pointer-events:none; }
+
+  /* === BLOG GRID === */
+  .blog-section { position:relative;z-index:1; padding:0 5% 80px; max-width:1200px; margin:0 auto; }
+  .blog-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .blog-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    overflow:hidden; transition:all 0.3s; cursor:pointer; position:relative;
+    animation:cardIn 0.4s ease forwards;
+  }
+  @keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .blog-card:hover { transform:translateY(-5px); border-color:rgba(0,212,255,0.3); box-shadow:0 24px 60px rgba(0,0,0,0.5),0 0 30px rgba(0,212,255,0.08); }
+  .blog-card-thumb {
+    aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+    font-size:3rem; position:relative; overflow:hidden;
+  }
+  .blog-card-thumb::after { content:'';position:absolute;inset:0;background:rgba(0,0,0,0.2); }
+  .blog-card-body { padding:22px; }
+  .blog-card-meta {
+    display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap;
+  }
+  .blog-tag {
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem;
+    color:var(--accent); letter-spacing:0.06em; text-transform:uppercase;
+    padding:3px 10px; background:rgba(0,212,255,0.08); border-radius:100px;
+    border:1px solid rgba(0,212,255,0.15);
+  }
+  .blog-date { font-size:0.78rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+  .blog-card-title {
+    font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700;
+    margin-bottom:10px; letter-spacing:-0.01em; line-height:1.4;
+  }
+  .blog-card-excerpt { font-size:0.88rem; color:var(--muted); line-height:1.7; margin-bottom:18px; }
+  .blog-card-footer {
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .blog-author { display:flex; align-items:center; gap:8px; }
+  .author-avatar {
+    width:28px;height:28px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius:50%; display:flex;align-items:center;justify-content:center;
+    font-size:0.65rem;font-weight:700;color:white;flex-shrink:0;
+  }
+  .author-name { font-size:0.8rem; color:var(--muted); }
+  .read-more {
+    font-size:0.82rem; color:var(--accent); font-weight:500;
+    display:flex;align-items:center;gap:4px; transition:gap 0.2s;
+  }
+  .blog-card:hover .read-more { gap:8px; }
+  .blog-card-actions {
+    position:absolute; top:12px; right:12px; display:flex; gap:6px; z-index:5;
+    opacity:0; transition:opacity 0.2s;
+  }
+  .blog-card:hover .blog-card-actions { opacity:1; }
+  .action-btn {
+    width:30px;height:30px; background:rgba(5,10,20,0.85); border:1px solid var(--border);
+    border-radius:6px; display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem; cursor:pointer; transition:all 0.2s;
+    color:var(--text);
+  }
+  .action-btn:hover { background:var(--surface2); border-color:rgba(0,212,255,0.3); }
+  .action-btn.delete:hover { background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4); }
+
+  /* === EMPTY STATE === */
+  .empty-state {
+    text-align:center; padding:80px 20px;
+    grid-column: 1/-1;
+  }
+  .empty-icon { font-size:4rem; margin-bottom:20px; display:block; }
+  .empty-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:700; margin-bottom:10px; }
+  .empty-desc { color:var(--muted); font-size:0.95rem; margin-bottom:28px; }
+
+  /* === MODAL OVERLAY === */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:5000;
+    background:rgba(0,0,0,0.8); backdrop-filter:blur(10px);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px; opacity:0; pointer-events:none;
+    transition:opacity 0.3s;
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal {
+    background:var(--surface); border:1px solid rgba(0,212,255,0.2);
+    border-radius:20px; width:100%; max-width:680px;
+    max-height:90vh; overflow-y:auto;
+    transform:translateY(30px) scale(0.97);
+    transition:transform 0.3s ease;
+    position:relative;
+  }
+  .modal-overlay.open .modal { transform:translateY(0) scale(1); }
+  .modal-header {
+    padding:28px 32px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .modal-title { font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:800; letter-spacing:-0.01em; }
+  .modal-close {
+    width:36px;height:36px; background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; display:flex;align-items:center;justify-content:center;
+    cursor:pointer; font-size:1rem; transition:all 0.2s; color:var(--muted);
+  }
+  .modal-close:hover { background:rgba(239,68,68,0.2); color:white; border-color:rgba(239,68,68,0.4); }
+  .modal-body { padding:28px 32px; }
+  .form-group { margin-bottom:22px; }
+  .form-label {
+    display:block; font-family:'JetBrains Mono',monospace; font-size:0.75rem;
+    color:var(--accent); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;
+  }
+  .form-input, .form-textarea, .form-select {
+    width:100%; padding:12px 16px;
+    background:var(--bg); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.95rem;
+    outline:none; transition:all 0.2s; resize:none;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color:rgba(0,212,255,0.4); box-shadow:0 0 0 3px rgba(0,212,255,0.08);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color:var(--muted); }
+  .form-select { appearance:none; cursor:pointer; }
+  .form-select option { background:var(--surface); color:var(--text); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .emoji-grid {
+    display:grid; grid-template-columns:repeat(8,1fr); gap:8px; margin-top:8px;
+  }
+  .emoji-opt {
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; border-radius:8px; cursor:pointer;
+    border:2px solid transparent; transition:all 0.15s;
+    background:var(--bg);
+  }
+  .emoji-opt:hover { border-color:rgba(0,212,255,0.3); transform:scale(1.1); }
+  .emoji-opt.selected { border-color:var(--accent); background:rgba(0,212,255,0.1); }
+  .color-grid { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+  .color-opt {
+    width:36px;height:36px; border-radius:8px; cursor:pointer;
+    border:2px solid transparent; transition:all 0.15s;
+  }
+  .color-opt:hover, .color-opt.selected { border-color:white; transform:scale(1.1); }
+  .char-count { font-size:0.75rem; color:var(--muted); text-align:right; margin-top:4px; }
+  .modal-footer {
+    padding:20px 32px 28px; display:flex; gap:12px; justify-content:flex-end;
+  }
+  .btn-cancel {
+    padding:11px 24px; background:transparent; border:1px solid var(--border);
+    color:var(--muted); font-family:'DM Sans',sans-serif; font-size:0.9rem;
+    border-radius:8px; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-cancel:hover { border-color:var(--text);color:var(--text); }
+  .btn-publish {
+    padding:11px 28px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:white; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700;
+    border-radius:8px; border:none; cursor:pointer; transition:all 0.2s;
+    box-shadow:0 4px 20px rgba(0,212,255,0.25);
+  }
+  .btn-publish:hover { transform:translateY(-1px); box-shadow:0 8px 30px rgba(0,212,255,0.4); }
+
+  /* === READ MODAL === */
+  .read-modal-body { padding:32px; }
+  .read-hero {
+    aspect-ratio:21/8; display:flex; align-items:center; justify-content:center;
+    font-size:5rem; border-radius:12px; margin-bottom:28px; position:relative; overflow:hidden;
+  }
+  .read-hero::after { content:'';position:absolute;inset:0;background:rgba(0,0,0,0.15); }
+  .read-meta { display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px; }
+  .read-title {
+    font-family:'Syne',sans-serif; font-size:clamp(1.4rem,3vw,2rem);
+    font-weight:800; letter-spacing:-0.02em; line-height:1.2; margin-bottom:16px;
+  }
+  .read-content {
+    font-size:1rem; color:#c8d8f0; line-height:1.9; font-weight:300;
+    white-space:pre-wrap;
+  }
+
+  /* === TOAST === */
+  .toast {
+    position:fixed; bottom:30px; right:30px; z-index:9999;
+    padding:14px 22px; background:var(--surface2); border:1px solid rgba(0,212,255,0.3);
+    border-radius:10px; font-size:0.9rem; color:var(--text);
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.5);
+    transform:translateX(120%); transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .toast.show { transform:translateX(0); }
+
+  /* === FOOTER === */
+  footer {
+    position:relative;z-index:1; border-top:1px solid var(--border);
+    padding:30px 5%; text-align:center;
+  }
+  footer p { font-size:0.82rem; color:var(--muted); }
+  footer span { color:var(--accent); }
+
+  /* === MOBILE === */
+  @media(max-width:900px) {
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+    .blog-grid { grid-template-columns:1fr 1fr; }
+    .form-row { grid-template-columns:1fr; }
+  }
+  @media(max-width:600px) {
+    .blog-grid { grid-template-columns:1fr; }
+    .cursor,.cursor-ring { display:none; }
+    .search-input { width:160px; }
+    .emoji-grid { grid-template-columns:repeat(6,1fr); }
+    .modal-header,.modal-body,.modal-footer,.read-modal-body { padding-left:20px;padding-right:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">HK</div>
+    Learn Tech With Hirdesh
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="index.html#videos">Videos</a></li>
+    <li><a href="index.html#platforms">Community</a></li>
+    <li><a href="index.html#newsletter">Newsletter</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+  </ul>
+  <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="nav-cta">▶ Subscribe</a>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-left">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span>Blog</span>
+    </div>
+    <h1 class="page-title">Tech <span>Blog</span></h1>
+    <p class="page-subtitle">Tutorials, insights & tips — new article every day</p>
+  </div>
+  <button class="add-blog-btn" onclick="openAddModal()">
+    <span class="plus">+</span> Add New Blog
+  </button>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-chip active" onclick="filterBlogs('all', this)">All</button>
+  <button class="filter-chip" onclick="filterBlogs('python', this)">Python</button>
+  <button class="filter-chip" onclick="filterBlogs('web dev', this)">Web Dev</button>
+  <button class="filter-chip" onclick="filterBlogs('dsa', this)">DSA</button>
+  <button class="filter-chip" onclick="filterBlogs('ai/ml', this)">AI/ML</button>
+  <button class="filter-chip" onclick="filterBlogs('devops', this)">DevOps</button>
+  <button class="filter-chip" onclick="filterBlogs('career', this)">Career</button>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" placeholder="Search blogs..." oninput="searchBlogs(this.value)"/>
+  </div>
+</div>
+
+<!-- BLOG GRID -->
+<div class="blog-section">
+  <div class="blog-grid" id="blogGrid"></div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">✍️ Write New Blog</div>
+      <button class="modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Blog Title *</label>
+        <input type="text" class="form-input" id="blogTitle" placeholder="Enter an engaging title..." maxlength="100" oninput="updateCharCount('blogTitle','titleCount',100)"/>
+        <div class="char-count"><span id="titleCount">0</span>/100</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Category *</label>
+          <select class="form-select form-input" id="blogCategory">
+            <option value="">Select category...</option>
+            <option value="Python">Python</option>
+            <option value="Web Dev">Web Dev</option>
+            <option value="DSA">DSA</option>
+            <option value="AI/ML">AI/ML</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Career">Career</option>
+            <option value="System Design">System Design</option>
+            <option value="Cloud">Cloud</option>
+            <option value="Tools">Tools</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Reading Time (mins)</label>
+          <input type="number" class="form-input" id="blogReadTime" placeholder="e.g. 5" min="1" max="60" value="5"/>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:22px">
+        <label class="form-label">Choose Icon</label>
+        <div class="emoji-grid" id="emojiGrid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Card Color</label>
+        <div class="color-grid" id="colorGrid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Excerpt (short summary) *</label>
+        <textarea class="form-textarea" id="blogExcerpt" rows="2" placeholder="Write a 1–2 sentence teaser..." maxlength="200" oninput="updateCharCount('blogExcerpt','excerptCount',200)"></textarea>
+        <div class="char-count"><span id="excerptCount">0</span>/200</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Content *</label>
+        <textarea class="form-textarea" id="blogContent" rows="8" placeholder="Write your full blog post here... Use paragraphs, code snippets, tips, etc." maxlength="5000" oninput="updateCharCount('blogContent','contentCount',5000)"></textarea>
+        <div class="char-count"><span id="contentCount">0</span>/5000</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-publish" onclick="publishBlog()">🚀 Publish Blog</button>
+    </div>
+  </div>
+</div>
+
+<!-- READ MODAL -->
+<div class="modal-overlay" id="readModal">
+  <div class="modal" style="max-width:780px">
+    <div class="modal-header">
+      <div class="modal-title">📖 Reading</div>
+      <button class="modal-close" onclick="closeReadModal()">✕</button>
+    </div>
+    <div class="read-modal-body" id="readModalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<footer>
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
+    <p style="font-size:0.82rem;color:var(--muted)">© 2025 Learn Tech With Hirdesh — <span style="color:var(--accent)">Engineer Hirdesh Kumar Yadav</span></p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="footer-social-btn" title="YouTube">▶</a>
+      <a href="https://www.instagram.com/kumarhirdesh03s" target="_blank" class="footer-social-btn" title="Instagram">📸</a>
+      <a href="https://www.linkedin.com/in/iamhirdeshkumar15/" target="_blank" class="footer-social-btn" title="LinkedIn">💼</a>
+      <a href="https://github.com/iamhirdeshkumar15" target="_blank" class="footer-social-btn" title="GitHub">💻</a>
+      <a href="https://x.com/HirdeshKumar303" target="_blank" class="footer-social-btn" title="X">𝕏</a>
+      <a href="https://www.facebook.com/share/1KYs9i1G4B/" target="_blank" class="footer-social-btn" title="Facebook">👥</a>
+      <a href="https://whatsapp.com/channel/0029VbCiqrmFHWq73dJAPG2n" target="_blank" class="footer-social-btn" title="WhatsApp">💬</a>
+      <a href="https://hirdeshkumar15.netlify.app/" target="_blank" class="footer-social-btn" title="Portfolio">🌐</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ====== DATA ======
+const STORAGE_KEY = 'hirdesh_blogs_v2';
+const EMOJIS = ['🐍','⚡','🧠','☁️','🤖','🏗️','🔥','💡','🎯','🚀','🛠️','📦','🔐','💻','🌐','📊','🧪','🎓','🔑','⚙️','📱','🗄️','🔄','🌟'];
+const COLORS = [
+  'linear-gradient(135deg,#0d1a2d,#1a0d2d)',
+  'linear-gradient(135deg,#0d2a1a,#0d1a2d)',
+  'linear-gradient(135deg,#2d1a0d,#1a0d2d)',
+  'linear-gradient(135deg,#0d1a2d,#2d0d1a)',
+  'linear-gradient(135deg,#1a2d0d,#0d2a2d)',
+  'linear-gradient(135deg,#2d2d0d,#0d1a2d)',
+  'linear-gradient(135deg,#0d0d2d,#2d0d0d)',
+  'linear-gradient(135deg,#1a1a2d,#2d1a1a)',
+];
+const SAMPLE = [
+  { id:'s1', title:'10 Python Tips Every Developer Should Know', category:'Python', emoji:'🐍', color:COLORS[0], excerpt:'Unlock the hidden power of Python with these 10 practical tips that will make your code cleaner, faster, and more Pythonic.', content:`1. Use List Comprehensions\nInstead of writing long for-loops, use list comprehensions for cleaner, faster code.\n\nExample:\n# Instead of this:\nresult = []\nfor x in range(10):\n    result.append(x * 2)\n\n# Write this:\nresult = [x * 2 for x in range(10)]\n\n2. F-Strings for Formatting\nUse f-strings (Python 3.6+) instead of .format() or concatenation.\n\nname = "Hirdesh"\nprint(f"Hello, {name}!")  # Clean and fast\n\n3. Use Enumerate Instead of Range\nWhen you need both index and value, use enumerate().\n\nfor i, item in enumerate(['a', 'b', 'c']):\n    print(i, item)\n\n4. Dictionary Unpacking (**)\nMerge dictionaries cleanly using **.\n\nd1 = {"a": 1}\nd2 = {"b": 2}\nmerged = {**d1, **d2}\n\n5. Use zip() to Pair Lists\nIterate over multiple lists simultaneously.\n\nnames = ["Alice", "Bob"]\nscores = [95, 87]\nfor name, score in zip(names, scores):\n    print(f"{name}: {score}")\n\nAnd many more tips that will level up your Python game every day!`, readTime:6, date:new Date(Date.now()-86400000).toISOString(), author:'Engineer Hirdesh Kumar Yadav' },
+  { id:'s2', title:'How to Build Your First REST API with Node.js', category:'Web Dev', emoji:'🌐', color:COLORS[1], excerpt:'Step-by-step guide to building a production-ready REST API using Node.js and Express — from setup to deployment.', content:`Building a REST API with Node.js is one of the most valuable skills for any developer. In this guide, we will go through the complete process.\n\nStep 1: Initialize Your Project\n\nnpm init -y\nnpm install express\n\nStep 2: Create Your Server\n\nconst express = require('express');\nconst app = express();\napp.use(express.json());\n\napp.get('/api/hello', (req, res) => {\n  res.json({ message: 'Hello from Hirdesh!' });\n});\n\napp.listen(3000, () => console.log('Server running on port 3000'));\n\nStep 3: Add Routes\nOrganize your routes into separate files for a cleaner codebase. Use Express Router for modular routing.\n\nStep 4: Connect to a Database\nUse MongoDB with Mongoose or PostgreSQL with pg for persistent data storage.\n\nStep 5: Add Middleware\nAlways add authentication middleware, rate limiting, and error handling before deploying to production.\n\nWith these 5 steps you have a solid foundation for any REST API project!`, readTime:8, date:new Date(Date.now()-2*86400000).toISOString(), author:'Engineer Hirdesh Kumar Yadav' },
+  { id:'s3', title:'Binary Search Explained — With 5 Real Interview Problems', category:'DSA', emoji:'🧠', color:COLORS[2], excerpt:'Master Binary Search once and for all with clear explanations, complexity analysis, and 5 common interview problems solved step-by-step.', content:`Binary Search is one of the most important algorithms you must master for coding interviews. Let me break it down clearly.\n\nWhat is Binary Search?\nBinary search finds an element in a sorted array in O(log n) time by repeatedly halving the search space.\n\nTemplate:\n\ndef binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\nProblem 1: Find First and Last Position\nUse two binary searches — one for the leftmost occurrence and one for the rightmost.\n\nProblem 2: Search in Rotated Sorted Array\nIdentify which half is sorted, then narrow your search accordingly.\n\nProblem 3: Find Peak Element\nA peak is an element greater than its neighbors. Use binary search to find it in O(log n).\n\nProblem 4: Koko Eating Bananas (LeetCode 875)\nApply binary search on the answer space, not the array.\n\nProblem 5: Capacity to Ship Packages (LeetCode 1011)\nAnother "binary search on answer" pattern — extremely common in interviews.\n\nKey Insight: Whenever you see a sorted search space or need to minimize/maximize something, think Binary Search!`, readTime:10, date:new Date(Date.now()-3*86400000).toISOString(), author:'Engineer Hirdesh Kumar Yadav' },
+];
+
+let blogs = [];
+let editingId = null;
+let selectedEmoji = EMOJIS[0];
+let selectedColor = COLORS[0];
+let currentFilter = 'all';
+let currentSearch = '';
+
+function loadBlogs() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    blogs = raw ? JSON.parse(raw) : [...SAMPLE];
+  } catch(e) { blogs = [...SAMPLE]; }
+}
+function saveBlogs() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(blogs));
+}
+
+// ====== RENDER ======
+function renderBlogs() {
+  const grid = document.getElementById('blogGrid');
+  let filtered = blogs;
+  if (currentFilter !== 'all') filtered = filtered.filter(b => b.category.toLowerCase() === currentFilter);
+  if (currentSearch.trim()) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(b => b.title.toLowerCase().includes(q) || b.excerpt.toLowerCase().includes(q) || b.category.toLowerCase().includes(q));
+  }
+  filtered = [...filtered].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><span class="empty-icon">📭</span><div class="empty-title">No blogs found</div><div class="empty-desc">Be the first — write something awesome!</div><button class="add-blog-btn" onclick="openAddModal()"><span class="plus">+</span> Add New Blog</button></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((b,i) => blogCard(b,i)).join('');
+}
+
+function blogCard(b, i) {
+  const ago = timeAgo(b.date);
+  return `<div class="blog-card" style="animation-delay:${i*60}ms">
+    <div class="blog-card-actions">
+      <button class="action-btn" onclick="openEditModal('${b.id}',event)" title="Edit">✏️</button>
+      <button class="action-btn delete" onclick="deleteBlog('${b.id}',event)" title="Delete">🗑️</button>
+    </div>
+    <div class="blog-card-thumb" style="background:${b.color}">
+      <span style="position:relative;z-index:1">${b.emoji}</span>
+    </div>
+    <div class="blog-card-body">
+      <div class="blog-card-meta">
+        <span class="blog-tag">${b.category}</span>
+        <span class="blog-date">${ago}</span>
+        <span class="blog-date">· ${b.readTime || 5} min read</span>
+      </div>
+      <div class="blog-card-title">${escHtml(b.title)}</div>
+      <div class="blog-card-excerpt">${escHtml(b.excerpt)}</div>
+      <div class="blog-card-footer">
+        <div class="blog-author">
+          <div class="author-avatar">HK</div>
+          <span class="author-name">Hirdesh Kumar</span>
+        </div>
+        <span class="read-more" onclick="openReadModal('${b.id}')">Read more →</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ====== MODAL ======
+function buildEmojiGrid() {
+  document.getElementById('emojiGrid').innerHTML = EMOJIS.map(e =>
+    `<div class="emoji-opt ${e===selectedEmoji?'selected':''}" onclick="selectEmoji('${e}',this)">${e}</div>`
+  ).join('');
+}
+function buildColorGrid() {
+  document.getElementById('colorGrid').innerHTML = COLORS.map((c,i) =>
+    `<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="selectColor(${i},this)"></div>`
+  ).join('');
+}
+function selectEmoji(e, el) {
+  selectedEmoji = e;
+  document.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectColor(i, el) {
+  selectedColor = COLORS[i];
+  document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function openAddModal() {
+  editingId = null;
+  selectedEmoji = EMOJIS[0];
+  selectedColor = COLORS[0];
+  document.getElementById('modalTitle').textContent = '✍️ Write New Blog';
+  document.getElementById('blogTitle').value = '';
+  document.getElementById('blogCategory').value = '';
+  document.getElementById('blogExcerpt').value = '';
+  document.getElementById('blogContent').value = '';
+  document.getElementById('blogReadTime').value = '5';
+  ['titleCount','excerptCount','contentCount'].forEach(id => document.getElementById(id).textContent = '0');
+  buildEmojiGrid(); buildColorGrid();
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openEditModal(id, e) {
+  e.stopPropagation();
+  const b = blogs.find(x=>x.id===id); if(!b) return;
+  editingId = id;
+  selectedEmoji = b.emoji || EMOJIS[0];
+  selectedColor = b.color || COLORS[0];
+  document.getElementById('modalTitle').textContent = '✏️ Edit Blog';
+  document.getElementById('blogTitle').value = b.title;
+  document.getElementById('blogCategory').value = b.category;
+  document.getElementById('blogExcerpt').value = b.excerpt;
+  document.getElementById('blogContent').value = b.content;
+  document.getElementById('blogReadTime').value = b.readTime || 5;
+  updateCharCount('blogTitle','titleCount',100);
+  updateCharCount('blogExcerpt','excerptCount',200);
+  updateCharCount('blogContent','contentCount',5000);
+  buildEmojiGrid(); buildColorGrid();
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function publishBlog() {
+  const title = document.getElementById('blogTitle').value.trim();
+  const cat = document.getElementById('blogCategory').value;
+  const excerpt = document.getElementById('blogExcerpt').value.trim();
+  const content = document.getElementById('blogContent').value.trim();
+  const readTime = parseInt(document.getElementById('blogReadTime').value) || 5;
+  if (!title || !cat || !excerpt || !content) { showToast('⚠️','Please fill all required fields'); return; }
+
+  if (editingId) {
+    const idx = blogs.findIndex(b=>b.id===editingId);
+    if(idx>-1) { blogs[idx] = {...blogs[idx], title, category:cat, excerpt, content, emoji:selectedEmoji, color:selectedColor, readTime}; }
+    showToast('✅','Blog updated!');
+  } else {
+    blogs.unshift({ id:'b'+Date.now(), title, category:cat, excerpt, content, emoji:selectedEmoji, color:selectedColor, readTime, date:new Date().toISOString(), author:'Engineer Hirdesh Kumar Yadav' });
+    showToast('🚀','Blog published!');
+  }
+  saveBlogs(); closeAddModal(); renderBlogs();
+}
+
+function deleteBlog(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this blog post?')) return;
+  blogs = blogs.filter(b=>b.id!==id);
+  saveBlogs(); renderBlogs();
+  showToast('🗑️','Blog deleted');
+}
+
+// ====== READ MODAL ======
+function openReadModal(id) {
+  const b = blogs.find(x=>x.id===id); if(!b) return;
+  const body = document.getElementById('readModalBody');
+  body.innerHTML = `
+    <div class="read-hero" style="background:${b.color}">${b.emoji}</div>
+    <div class="read-meta">
+      <span class="blog-tag">${b.category}</span>
+      <span class="blog-date">${formatDate(b.date)}</span>
+      <span class="blog-date">· ${b.readTime||5} min read</span>
+    </div>
+    <div class="read-title">${escHtml(b.title)}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+      <div class="author-avatar">HK</div>
+      <span style="font-size:0.9rem;color:var(--muted)">by <strong style="color:var(--text)">${b.author}</strong></span>
+    </div>
+    <div class="read-content">${escHtml(b.content)}</div>`;
+  document.getElementById('readModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeReadModal() {
+  document.getElementById('readModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ====== FILTER & SEARCH ======
+function filterBlogs(tag, el) {
+  currentFilter = tag;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderBlogs();
+}
+function searchBlogs(q) {
+  currentSearch = q;
+  renderBlogs();
+}
+
+// ====== HELPERS ======
+function updateCharCount(inputId, countId, max) {
+  const len = document.getElementById(inputId).value.length;
+  document.getElementById(countId).textContent = len;
+}
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff/60000), h = Math.floor(diff/3600000), d = Math.floor(diff/86400000);
+  if(d>30) return formatDate(iso);
+  if(d>0) return d===1?'Yesterday':`${d} days ago`;
+  if(h>0) return `${h}h ago`;
+  if(m>0) return `${m}m ago`;
+  return 'Just now';
+}
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ====== CURSOR ======
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px';});
+(function animRing(){rx+=(mx-rx-18)*0.15;ry+=(my-ry-18)*0.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+// ====== MOBILE MENU ======
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  const open = links.style.display === 'flex';
+  links.style.display = open ? 'none' : 'flex';
+  if(!open){Object.assign(links.style,{flexDirection:'column',position:'fixed',top:'68px',left:'0',right:'0',background:'rgba(5,10,20,0.98)',padding:'20px 5%',borderBottom:'1px solid rgba(0,212,255,0.12)',backdropFilter:'blur(20px)',zIndex:'999'});}
+}
+
+// ====== CLOSE MODALS ON BG CLICK ======
+document.getElementById('addModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeAddModal(); });
+document.getElementById('readModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeReadModal(); });
+
+// ====== INIT ======
+loadBlogs();
+renderBlogs();
+</script>
+</body>
+</html>
