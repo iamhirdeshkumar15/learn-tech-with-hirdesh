@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Channel — Learn Tech With Hirdesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#050a14; --surface:#0d1a2d; --surface2:#112240;
+    --accent:#00d4ff; --accent2:#7c3aed; --green:#25d366;
+    --text:#e2eaf7; --muted:#7a90b0; --border:rgba(0,212,255,0.12);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;min-height:100vh;}
+  body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+
+  /* CURSOR */
+  .cursor{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s;mix-blend-mode:screen;}
+  .cursor-ring{width:36px;height:36px;border:1.5px solid rgba(0,212,255,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .18s;mix-blend-mode:screen;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:18px 5%;background:rgba(5,10,20,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
+  .nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:white;}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{font-size:.9rem;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;}
+  .nav-links a.active,
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--green);}
+  .nav-cta{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:9px 22px;border-radius:6px;cursor:pointer;transition:all .2s;text-decoration:none;}
+  .nav-cta:hover{background:var(--accent);color:var(--bg);}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+  .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;}
+
+  /* PAGE WRAPPER */
+  .page{max-width:780px;margin:0 auto;padding:110px 5% 80px;position:relative;z-index:1;}
+
+  /* PAGE HEADER */
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:36px;}
+  .breadcrumb{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .breadcrumb a{color:var(--accent);text-decoration:none;}
+  .page-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;}
+  .page-title span{background:linear-gradient(90deg,var(--green),#00c853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .page-sub{color:var(--muted);font-size:.92rem;margin-top:8px;font-weight:300;display:flex;align-items:center;gap:8px;}
+  .wa-link{color:var(--green);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:3px 10px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);border-radius:100px;transition:all .2s;}
+  .wa-link:hover{background:rgba(37,211,102,.16);border-color:rgba(37,211,102,.4);}
+
+  /* ADD POST BUTTON */
+  .add-post-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;background:linear-gradient(135deg,var(--green),#00c853);color:white;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;border-radius:10px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 24px rgba(37,211,102,.25);white-space:nowrap;flex-shrink:0;}
+  .add-post-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(37,211,102,.4);}
+  .add-post-btn .plus{font-size:1.2rem;font-weight:400;}
+
+  /* FILTER TABS */
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:28px;}
+  .ftab{padding:6px 16px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.04em;}
+  .ftab:hover,.ftab.active{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.35);color:var(--green);}
+  .search-wrap{margin-left:auto;position:relative;}
+  .search-input{padding:7px 14px 7px 34px;background:var(--surface);border:1px solid var(--border);border-radius:100px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:all .2s;width:200px;}
+  .search-input:focus{border-color:rgba(37,211,102,.4);box-shadow:0 0 0 3px rgba(37,211,102,.08);}
+  .search-input::placeholder{color:var(--muted);}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.85rem;pointer-events:none;}
+
+  /* CHANNEL HEADER CARD */
+  .channel-card{background:linear-gradient(135deg,rgba(37,211,102,.06),rgba(0,212,255,.04));border:1px solid rgba(37,211,102,.18);border-radius:16px;padding:22px 26px;margin-bottom:32px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .channel-avatar{width:56px;height:56px;background:linear-gradient(135deg,var(--green),#00c853);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .channel-info h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:4px;}
+  .channel-info p{font-size:.83rem;color:var(--muted);line-height:1.5;}
+  .channel-stats{margin-left:auto;display:flex;gap:24px;flex-wrap:wrap;}
+  .cstat{text-align:center;}
+  .cstat-num{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--green),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1;}
+  .cstat-lbl{font-size:.7rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-top:3px;}
+
+  /* POSTS FEED */
+  .posts-feed{display:flex;flex-direction:column;gap:16px;}
+
+  /* POST CARD — WhatsApp bubble style */
+  .post-card{background:var(--surface);border:1px solid var(--border);border-radius:18px 18px 18px 4px;padding:0;overflow:hidden;transition:all .3s;position:relative;animation:slideIn .35s ease forwards;opacity:0;}
+  @keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+  .post-card:hover{border-color:rgba(37,211,102,.25);box-shadow:0 16px 50px rgba(0,0,0,.45);}
+
+  /* post type stripe */
+  .post-stripe{height:3px;width:100%;}
+  .stripe-update{background:linear-gradient(90deg,var(--green),#00c853);}
+  .stripe-tip{background:linear-gradient(90deg,var(--accent),#0099cc);}
+  .stripe-news{background:linear-gradient(90deg,#f59e0b,#ef4444);}
+  .stripe-resource{background:linear-gradient(90deg,var(--accent2),#9333ea);}
+  .stripe-motivation{background:linear-gradient(90deg,#ec4899,#f59e0b);}
+
+  .post-body{padding:20px 22px 16px;}
+  .post-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .post-type-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;}
+  .badge-update{background:rgba(37,211,102,.1);color:var(--green);border:1px solid rgba(37,211,102,.2);}
+  .badge-tip{background:rgba(0,212,255,.08);color:var(--accent);border:1px solid rgba(0,212,255,.15);}
+  .badge-news{background:rgba(245,158,11,.08);color:#f59e0b;border:1px solid rgba(245,158,11,.15);}
+  .badge-resource{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.2);}
+  .badge-motivation{background:rgba(236,72,153,.08);color:#f472b6;border:1px solid rgba(236,72,153,.15);}
+  .post-time{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);margin-left:auto;}
+  .post-pinned{font-size:.75rem;color:#f59e0b;display:flex;align-items:center;gap:4px;}
+
+  /* post image */
+  .post-image{width:100%;max-height:320px;object-fit:cover;display:block;margin:-4px 0 14px;}
+  .post-image-placeholder{width:100%;aspect-ratio:16/7;display:flex;align-items:center;justify-content:center;font-size:4rem;margin:-4px 0 14px;position:relative;}
+  .post-image-placeholder::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.15);}
+
+  .post-text{font-size:.97rem;color:#d4e4f7;line-height:1.8;font-weight:300;white-space:pre-wrap;word-break:break-word;}
+  .post-text a{color:var(--green);text-decoration:underline;text-underline-offset:3px;}
+
+  /* link preview */
+  .post-link-preview{margin-top:14px;background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.15);border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;text-decoration:none;transition:all .2s;}
+  .post-link-preview:hover{background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.3);}
+  .link-icon{font-size:1.6rem;flex-shrink:0;}
+  .link-info{}
+  .link-title{font-size:.88rem;color:var(--text);font-weight:500;margin-bottom:3px;}
+  .link-url{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--green);}
+
+  /* reactions + footer */
+  .post-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 22px 14px;border-top:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+  .reactions{display:flex;gap:6px;flex-wrap:wrap;}
+  .reaction-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;font-size:.82rem;cursor:pointer;transition:all .2s;border:none;}
+  .reaction-btn:hover{background:rgba(37,211,102,.1);transform:scale(1.05);}
+  .reaction-btn.reacted{background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);}
+  .reaction-count{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);}
+  .post-actions{display:flex;gap:6px;}
+  .pa-btn{width:30px;height:30px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;transition:all .2s;color:var(--muted);}
+  .pa-btn:hover{background:var(--surface);color:var(--text);border-color:rgba(0,212,255,.3);}
+  .pa-btn.del:hover{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3);}
+  .pa-btn.pin-active{color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);}
+
+  /* EMPTY */
+  .empty-feed{text-align:center;padding:80px 20px;}
+  .empty-icon{font-size:4rem;margin-bottom:16px;display:block;}
+  .empty-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+  .empty-desc{color:var(--muted);font-size:.92rem;margin-bottom:24px;}
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal{background:var(--surface);border:1px solid rgba(37,211,102,.2);border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;transform:translateY(30px) scale(.97);transition:transform .3s;}
+  .modal-overlay.open .modal{transform:translateY(0) scale(1);}
+  .modal-header{padding:26px 30px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .modal-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;}
+  .modal-close{width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all .2s;color:var(--muted);}
+  .modal-close:hover{background:rgba(239,68,68,.2);color:white;}
+  .modal-body{padding:24px 30px;}
+  .form-group{margin-bottom:20px;}
+  .form-label{display:block;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+  .form-input,.form-textarea,.form-select{width:100%;padding:11px 15px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:all .2s;resize:none;}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:rgba(37,211,102,.4);box-shadow:0 0 0 3px rgba(37,211,102,.08);}
+  .form-input::placeholder,.form-textarea::placeholder{color:var(--muted);}
+  .form-select{appearance:none;cursor:pointer;}
+  .form-select option{background:var(--surface);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .char-count{font-size:.72rem;color:var(--muted);text-align:right;margin-top:3px;}
+
+  /* emoji picker for post image */
+  .thumb-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin-top:7px;}
+  .thumb-opt{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:1.3rem;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .15s;background:var(--bg);}
+  .thumb-opt:hover{border-color:rgba(37,211,102,.3);transform:scale(1.1);}
+  .thumb-opt.selected{border-color:var(--green);background:rgba(37,211,102,.1);}
+
+  /* pin toggle */
+  .pin-toggle{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;user-select:none;}
+  .pin-toggle.on{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05);}
+  .pin-toggle-dot{width:36px;height:20px;background:var(--surface2);border-radius:100px;position:relative;transition:background .2s;}
+  .pin-toggle.on .pin-toggle-dot{background:#f59e0b;}
+  .pin-toggle-dot::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:white;border-radius:50%;transition:left .2s;}
+  .pin-toggle.on .pin-toggle-dot::after{left:19px;}
+  .pin-label{font-size:.88rem;color:var(--muted);}
+  .pin-toggle.on .pin-label{color:#f59e0b;}
+
+  .modal-footer{padding:16px 30px 24px;display:flex;gap:10px;justify-content:flex-end;}
+  .btn-cancel{padding:10px 22px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.88rem;border-radius:8px;cursor:pointer;transition:all .2s;}
+  .btn-cancel:hover{border-color:var(--text);color:var(--text);}
+  .btn-post{padding:10px 26px;background:linear-gradient(135deg,var(--green),#00c853);color:white;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;border-radius:8px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(37,211,102,.25);}
+  .btn-post:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(37,211,102,.4);}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:13px 20px;background:var(--surface2);border:1px solid rgba(37,211,102,.3);border-radius:10px;font-size:.88rem;color:var(--text);display:flex;align-items:center;gap:9px;box-shadow:0 10px 40px rgba(0,0,0,.5);transform:translateX(130%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+  .toast.show{transform:translateX(0);}
+
+  /* FOOTER */
+  footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 5%;}
+  .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;}
+  .footer-inner p{font-size:.82rem;color:var(--muted);}
+  .footer-socials{display:flex;gap:8px;flex-wrap:wrap;}
+  .footer-social-btn{width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;transition:all .2s;text-decoration:none;}
+  .footer-social-btn:hover{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.3);transform:translateY(-2px);}
+
+  /* MOBILE */
+  @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}}
+  @media(max-width:600px){.cursor,.cursor-ring{display:none;}.form-row{grid-template-columns:1fr;}.thumb-grid{grid-template-columns:repeat(6,1fr);}.channel-stats{width:100%;justify-content:space-around;}.search-input{width:150px;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">HK</div>
+    Learn Tech With Hirdesh
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="index.html#videos">Videos</a></li>
+    <li><a href="index.html#platforms">Community</a></li>
+    <li><a href="index.html#newsletter">Newsletter</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="channel.html" class="active">Channel</a></li>
+  </ul>
+  <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="nav-cta">▶ Subscribe</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Channel</span></div>
+      <h1 class="page-title">Channel <span>Posts</span></h1>
+      <div class="page-sub">
+        Mirror of WhatsApp Channel &nbsp;·&nbsp;
+        <a class="wa-link" href="https://whatsapp.com/channel/0029VbCiqrmFHWq73dJAPG2n" target="_blank">💬 Join on WhatsApp</a>
+      </div>
+    </div>
+    <button class="add-post-btn" onclick="openAddModal()">
+      <span class="plus">+</span> New Post
+    </button>
+  </div>
+
+  <!-- CHANNEL INFO CARD -->
+  <div class="channel-card">
+    <div class="channel-avatar">💬</div>
+    <div class="channel-info">
+      <h3>Learn Tech With Hirdesh</h3>
+      <p>Tech tips, updates, resources & motivation — posted daily by Engineer Hirdesh Kumar Yadav</p>
+    </div>
+    <div class="channel-stats">
+      <div class="cstat"><span class="cstat-num" id="totalPosts">0</span><div class="cstat-lbl">Posts</div></div>
+      <div class="cstat"><span class="cstat-num" id="todayPosts">0</span><div class="cstat-lbl">Today</div></div>
+      <div class="cstat"><span class="cstat-num" id="thisWeek">0</span><div class="cstat-lbl">This Week</div></div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <button class="ftab active" onclick="setFilter('all',this)">All</button>
+    <button class="ftab" onclick="setFilter('update',this)">📢 Updates</button>
+    <button class="ftab" onclick="setFilter('tip',this)">💡 Tips</button>
+    <button class="ftab" onclick="setFilter('news',this)">🔥 News</button>
+    <button class="ftab" onclick="setFilter('resource',this)">📦 Resources</button>
+    <button class="ftab" onclick="setFilter('motivation',this)">🌟 Motivation</button>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" placeholder="Search posts..." oninput="setSearch(this.value)"/>
+    </div>
+  </div>
+
+  <!-- FEED -->
+  <div class="posts-feed" id="feed"></div>
+
+</div><!-- /page -->
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">📢 New Channel Post</div>
+      <button class="modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Post Type *</label>
+          <select class="form-select form-input" id="postType">
+            <option value="update">📢 Update</option>
+            <option value="tip">💡 Tip</option>
+            <option value="news">🔥 News</option>
+            <option value="resource">📦 Resource</option>
+            <option value="motivation">🌟 Motivation</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Post Title (optional)</label>
+          <input type="text" class="form-input" id="postTitle" placeholder="Short headline..."/>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:20px">
+        <label class="form-label">Message / Content *</label>
+        <textarea class="form-textarea" id="postText" rows="6" placeholder="Write your post here...&#10;&#10;Paste tips, announcements, links, code snippets, anything!&#10;&#10;Tip: URLs typed here will be auto-detected and shown as link previews." maxlength="2000" oninput="updateCC('postText','postCC',2000)"></textarea>
+        <div class="char-count"><span id="postCC">0</span>/2000</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Card Cover (pick an icon)</label>
+        <div class="thumb-grid" id="thumbGrid"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">External Link (optional)</label>
+        <input type="url" class="form-input" id="postLink" placeholder="https://..."/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Link Label (optional)</label>
+        <input type="text" class="form-input" id="postLinkLabel" placeholder="e.g. Watch Video, Read Article, Join Now..."/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Pin this post?</label>
+        <div class="pin-toggle" id="pinToggle" onclick="togglePin()">
+          <div class="pin-toggle-dot"></div>
+          <span class="pin-label">Not pinned</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-post" onclick="publishPost()">📤 Post Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Learn Tech With Hirdesh — <span style="color:var(--accent)">Engineer Hirdesh Kumar Yadav</span></p>
+    <div class="footer-socials">
+      <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="footer-social-btn" title="YouTube">▶</a>
+      <a href="https://www.instagram.com/kumarhirdesh03s" target="_blank" class="footer-social-btn" title="Instagram">📸</a>
+      <a href="https://www.linkedin.com/in/iamhirdeshkumar15/" target="_blank" class="footer-social-btn" title="LinkedIn">💼</a>
+      <a href="https://github.com/iamhirdeshkumar15" target="_blank" class="footer-social-btn" title="GitHub">💻</a>
+      <a href="https://x.com/HirdeshKumar303" target="_blank" class="footer-social-btn" title="X">𝕏</a>
+      <a href="https://www.facebook.com/share/1KYs9i1G4B/" target="_blank" class="footer-social-btn" title="Facebook">👥</a>
+      <a href="https://whatsapp.com/channel/0029VbCiqrmFHWq73dJAPG2n" target="_blank" class="footer-social-btn" title="WhatsApp">💬</a>
+      <a href="https://hirdeshkumar15.netlify.app/" target="_blank" class="footer-social-btn" title="Portfolio">🌐</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const SK = 'hirdesh_channel_v1';
+const THUMBS = ['📢','💡','🔥','📦','🌟','🚀','⚡','🐍','🧠','☁️','🤖','🏗️','💻','🌐','📊','🎯','🛠️','🔐','🎓','📱','🔑','⚙️','🔄','💎'];
+const TYPE_META = {
+  update: {label:'Update',   cls:'badge-update',    stripe:'stripe-update'},
+  tip:    {label:'Tip',      cls:'badge-tip',       stripe:'stripe-tip'},
+  news:   {label:'News',     cls:'badge-news',      stripe:'stripe-news'},
+  resource:{label:'Resource',cls:'badge-resource',  stripe:'stripe-resource'},
+  motivation:{label:'Motivation',cls:'badge-motivation',stripe:'stripe-motivation'},
+};
+const GRAD = {
+  update:   'linear-gradient(135deg,#0d2a14,#051a0d)',
+  tip:      'linear-gradient(135deg,#0d1a2d,#051020)',
+  news:     'linear-gradient(135deg,#2d1a05,#1a0d05)',
+  resource: 'linear-gradient(135deg,#1a0d2d,#0d0520)',
+  motivation:'linear-gradient(135deg,#2d0d1a,#1a0d0d)',
+};
+const SAMPLE_POSTS = [
+  {id:'sp1',type:'update',title:'🎉 New Video Is Live!',text:'Just dropped a brand new video on Python List Comprehensions! This is one of the most important Python concepts you must know.\n\n🔗 Watch it now on YouTube and don\'t forget to subscribe for daily tech content!',thumb:'🐍',link:'https://youtube.com/@learn_tech_with_hirdesh',linkLabel:'Watch on YouTube',pinned:true,reactions:{❤️:24,'🔥':18,'👍':31,'🎉':9},date:new Date().toISOString()},
+  {id:'sp2',type:'tip',title:'',text:'💡 Quick Python Tip!\n\nUse f-strings instead of .format() — they are faster and cleaner:\n\n✅  f"Hello {name}!"\n❌  "Hello {}".format(name)\n\nSave this for your next project! 🚀',thumb:'💡',link:'',linkLabel:'',pinned:false,reactions:{❤️:15,'🔥':22,'👍':18,'🎉':5},date:new Date(Date.now()-3600000*2).toISOString()},
+  {id:'sp3',type:'resource',title:'Free DSA Sheet',text:'📦 Resource Drop!\n\nHere is a FREE 450-question DSA sheet that I personally curated for coding interview preparation.\n\nCovers:\n✔ Arrays & Strings\n✔ Linked Lists\n✔ Trees & Graphs\n✔ Dynamic Programming\n✔ System Design basics\n\nBookmark this — you will thank me later! 🎯',thumb:'📦',link:'https://github.com/iamhirdeshkumar15',linkLabel:'View on GitHub',pinned:false,reactions:{❤️:42,'🔥':38,'👍':55,'🎉':20},date:new Date(Date.now()-3600000*5).toISOString()},
+  {id:'sp4',type:'motivation',title:'',text:'🌟 Remember this:\n\nEvery expert was once a beginner.\nEvery pro was once an amateur.\nEvery icon was once unknown.\n\nYour consistency today is your success tomorrow. Keep learning, keep building. 💪\n\n— Hirdesh Kumar Yadav',thumb:'🌟',link:'',linkLabel:'',pinned:false,reactions:{❤️:67,'🔥':29,'👍':48,'🎉':33},date:new Date(Date.now()-3600000*22).toISOString()},
+];
+
+let posts = [];
+let editingId = null;
+let selectedThumb = THUMBS[0];
+let isPinned = false;
+let currentFilter = 'all';
+let currentSearch = '';
+
+// ═══════════════ STORAGE ═══════════════
+function load(){
+  try{ const r=localStorage.getItem(SK); posts=r?JSON.parse(r):[...SAMPLE_POSTS]; }
+  catch(e){ posts=[...SAMPLE_POSTS]; }
+}
+function save(){ localStorage.setItem(SK,JSON.stringify(posts)); }
+
+// ═══════════════ RENDER ═══════════════
+function render(){
+  const feed = document.getElementById('feed');
+  let arr = [...posts];
+
+  if(currentFilter!=='all') arr=arr.filter(p=>p.type===currentFilter);
+  if(currentSearch.trim()){ const q=currentSearch.toLowerCase(); arr=arr.filter(p=>(p.title+p.text).toLowerCase().includes(q)); }
+
+  // pinned first, then newest
+  arr.sort((a,b)=>{
+    if(a.pinned&&!b.pinned) return -1;
+    if(!a.pinned&&b.pinned) return 1;
+    return new Date(b.date)-new Date(a.date);
+  });
+
+  updateStats();
+
+  if(!arr.length){
+    feed.innerHTML=`<div class="empty-feed"><span class="empty-icon">📭</span><div class="empty-title">No posts yet</div><div class="empty-desc">Hit "+ New Post" to publish your first channel update!</div><button class="add-post-btn" onclick="openAddModal()"><span class="plus">+</span> New Post</button></div>`;
+    return;
+  }
+  feed.innerHTML = arr.map((p,i)=>postCard(p,i)).join('');
+}
+
+function postCard(p,i){
+  const tm = TYPE_META[p.type]||TYPE_META.update;
+  const ago = timeAgo(p.date);
+  const reacts = Object.entries(p.reactions||{}).map(([e,c])=>
+    `<button class="reaction-btn" onclick="react('${p.id}','${e}')">${e}<span class="reaction-count">${c}</span></button>`
+  ).join('');
+  const imageSection = p.thumb?`
+    <div class="post-image-placeholder" style="background:${GRAD[p.type]||GRAD.update}">
+      <span style="position:relative;z-index:1;font-size:4.5rem">${p.thumb}</span>
+    </div>`:'';
+  const titleSection = p.title?`<div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:10px;letter-spacing:-.01em">${escHtml(p.title)}</div>`:'';
+  const linkSection = p.link?`
+    <a class="post-link-preview" href="${p.link}" target="_blank" rel="noopener">
+      <span class="link-icon">🔗</span>
+      <div class="link-info">
+        <div class="link-title">${escHtml(p.linkLabel||p.link)}</div>
+        <div class="link-url">${p.link.replace(/^https?:\/\//,'').slice(0,50)}${p.link.length>55?'…':''}</div>
+      </div>
+    </a>`:'';
+  const pinIcon = p.pinned?`<span class="post-pinned">📌 Pinned</span>`:'';
+  return `<div class="post-card" style="animation-delay:${i*50}ms" id="pc-${p.id}">
+    <div class="post-stripe ${tm.stripe}"></div>
+    <div class="post-body">
+      <div class="post-meta">
+        <span class="post-type-badge ${tm.cls}">${tm.label}</span>
+        ${pinIcon}
+        <span class="post-time">${ago}</span>
+      </div>
+      ${imageSection}
+      ${titleSection}
+      <div class="post-text">${linkifyText(escHtml(p.text))}</div>
+      ${linkSection}
+    </div>
+    <div class="post-footer">
+      <div class="reactions">${reacts}</div>
+      <div class="post-actions">
+        <button class="pa-btn ${p.pinned?'pin-active':''}" onclick="togglePinPost('${p.id}')" title="${p.pinned?'Unpin':'Pin'}">📌</button>
+        <button class="pa-btn" onclick="openEditModal('${p.id}')" title="Edit">✏️</button>
+        <button class="pa-btn del" onclick="deletePost('${p.id}')" title="Delete">🗑️</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateStats(){
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  const weekStart = todayStart - 6*86400000;
+  document.getElementById('totalPosts').textContent = posts.length;
+  document.getElementById('todayPosts').textContent = posts.filter(p=>new Date(p.date).getTime()>=todayStart).length;
+  document.getElementById('thisWeek').textContent  = posts.filter(p=>new Date(p.date).getTime()>=weekStart).length;
+}
+
+// ═══════════════ MODAL ═══════════════
+function buildThumbGrid(){
+  document.getElementById('thumbGrid').innerHTML = THUMBS.map(t=>
+    `<div class="thumb-opt ${t===selectedThumb?'selected':''}" onclick="pickThumb('${t}',this)">${t}</div>`
+  ).join('');
+}
+function pickThumb(t,el){ selectedThumb=t; document.querySelectorAll('.thumb-opt').forEach(x=>x.classList.remove('selected')); el.classList.add('selected'); }
+
+function openAddModal(){
+  editingId=null; selectedThumb=THUMBS[0]; isPinned=false;
+  document.getElementById('modalTitle').textContent='📢 New Channel Post';
+  document.getElementById('postType').value='update';
+  document.getElementById('postTitle').value='';
+  document.getElementById('postText').value='';
+  document.getElementById('postLink').value='';
+  document.getElementById('postLinkLabel').value='';
+  document.getElementById('postCC').textContent='0';
+  const pt=document.getElementById('pinToggle'); pt.classList.remove('on'); pt.querySelector('.pin-label').textContent='Not pinned';
+  buildThumbGrid();
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function openEditModal(id){
+  const p=posts.find(x=>x.id===id); if(!p) return;
+  editingId=id; selectedThumb=p.thumb||THUMBS[0]; isPinned=p.pinned||false;
+  document.getElementById('modalTitle').textContent='✏️ Edit Post';
+  document.getElementById('postType').value=p.type;
+  document.getElementById('postTitle').value=p.title||'';
+  document.getElementById('postText').value=p.text;
+  document.getElementById('postLink').value=p.link||'';
+  document.getElementById('postLinkLabel').value=p.linkLabel||'';
+  updateCC('postText','postCC',2000);
+  const pt=document.getElementById('pinToggle');
+  if(isPinned){pt.classList.add('on');pt.querySelector('.pin-label').textContent='Pinned to top';}
+  else{pt.classList.remove('on');pt.querySelector('.pin-label').textContent='Not pinned';}
+  buildThumbGrid();
+  document.getElementById('addModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); document.body.style.overflow=''; }
+
+function togglePin(){
+  isPinned=!isPinned;
+  const pt=document.getElementById('pinToggle');
+  pt.classList.toggle('on',isPinned);
+  pt.querySelector('.pin-label').textContent=isPinned?'Pinned to top':'Not pinned';
+}
+
+function publishPost(){
+  const type=document.getElementById('postType').value;
+  const title=document.getElementById('postTitle').value.trim();
+  const text=document.getElementById('postText').value.trim();
+  const link=document.getElementById('postLink').value.trim();
+  const linkLabel=document.getElementById('postLinkLabel').value.trim();
+  if(!text){ showToast('⚠️','Please write your post content'); return; }
+
+  if(editingId){
+    const idx=posts.findIndex(p=>p.id===editingId);
+    if(idx>-1) posts[idx]={...posts[idx],type,title,text,thumb:selectedThumb,link,linkLabel,pinned:isPinned};
+    showToast('✅','Post updated!');
+  } else {
+    posts.unshift({id:'p'+Date.now(),type,title,text,thumb:selectedThumb,link,linkLabel,pinned:isPinned,reactions:{'❤️':0,'🔥':0,'👍':0,'🎉':0},date:new Date().toISOString()});
+    showToast('📤','Post published!');
+  }
+  save(); closeAddModal(); render();
+}
+
+function deletePost(id){
+  if(!confirm('Delete this post?')) return;
+  posts=posts.filter(p=>p.id!==id);
+  save(); render(); showToast('🗑️','Post deleted');
+}
+function togglePinPost(id){
+  const p=posts.find(x=>x.id===id); if(!p) return;
+  p.pinned=!p.pinned;
+  save(); render();
+  showToast(p.pinned?'📌':'📌',p.pinned?'Post pinned to top':'Post unpinned');
+}
+function react(id,emoji){
+  const p=posts.find(x=>x.id===id); if(!p) return;
+  if(!p.reactions) p.reactions={};
+  p.reactions[emoji]=(p.reactions[emoji]||0)+1;
+  save();
+  // update just that button
+  const card=document.getElementById('pc-'+id);
+  if(card){
+    const reacts=card.querySelector('.reactions');
+    reacts.innerHTML=Object.entries(p.reactions).map(([e,c])=>
+      `<button class="reaction-btn" onclick="react('${id}','${e}')">${e}<span class="reaction-count">${c}</span></button>`
+    ).join('');
+  }
+}
+
+// ═══════════════ FILTER / SEARCH ═══════════════
+function setFilter(f,el){ currentFilter=f; document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render(); }
+function setSearch(q){ currentSearch=q; render(); }
+
+// ═══════════════ HELPERS ═══════════════
+function updateCC(inId,outId,max){ document.getElementById(outId).textContent=document.getElementById(inId).value.length; }
+function timeAgo(iso){
+  const d=Math.floor((Date.now()-new Date(iso))/86400000);
+  const h=Math.floor((Date.now()-new Date(iso))/3600000);
+  const m=Math.floor((Date.now()-new Date(iso))/60000);
+  if(d>30) return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+  if(d>0) return d===1?'Yesterday':`${d}d ago`;
+  if(h>0) return `${h}h ago`;
+  if(m>0) return `${m}m ago`;
+  return 'Just now';
+}
+function escHtml(s){ return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''; }
+function linkifyText(s){
+  return s.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+function showToast(icon,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ═══════════════ CURSOR ═══════════════
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-5+'px';cur.style.top=my-5+'px';});
+(function aR(){rx+=(mx-rx-18)*.15;ry+=(my-ry-18)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(aR);})();
+
+// ═══════════════ MOBILE MENU ═══════════════
+function toggleMenu(){
+  const l=document.querySelector('.nav-links'),open=l.style.display==='flex';
+  l.style.display=open?'none':'flex';
+  if(!open) Object.assign(l.style,{flexDirection:'column',position:'fixed',top:'68px',left:'0',right:'0',background:'rgba(5,10,20,.98)',padding:'20px 5%',borderBottom:'1px solid rgba(0,212,255,.12)',backdropFilter:'blur(20px)',zIndex:'999'});
+}
+
+// ═══════════════ MODAL BG CLOSE ═══════════════
+document.getElementById('addModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAddModal();});
+
+// ═══════════════ INIT ═══════════════
+load();
+render();
+</script>
+</body>
+</html>
