@@ -200,40 +200,6 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
 .reveal.visible{opacity:1;transform:translateY(0);}
 .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.1),transparent);max-width:1200px;margin:0 auto;}
 
-/* LOGO JUMP ANIMATION */
-.logo-text{display:inline-flex;gap:0px;align-items:center;}
-.logo-text .l{display:inline-block;transition:transform .2s ease,color .2s ease;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;white-space:pre;}
-.nav-logo:hover .l{animation:jumpLetter .55s ease forwards;}
-.nav-logo:hover .l:nth-child(1) {animation-delay:.00s}
-.nav-logo:hover .l:nth-child(2) {animation-delay:.03s}
-.nav-logo:hover .l:nth-child(3) {animation-delay:.06s}
-.nav-logo:hover .l:nth-child(4) {animation-delay:.09s}
-.nav-logo:hover .l:nth-child(5) {animation-delay:.12s}
-.nav-logo:hover .l:nth-child(6) {animation-delay:.15s}
-.nav-logo:hover .l:nth-child(7) {animation-delay:.18s}
-.nav-logo:hover .l:nth-child(8) {animation-delay:.21s}
-.nav-logo:hover .l:nth-child(9) {animation-delay:.24s}
-.nav-logo:hover .l:nth-child(10){animation-delay:.27s}
-.nav-logo:hover .l:nth-child(11){animation-delay:.30s}
-.nav-logo:hover .l:nth-child(12){animation-delay:.33s}
-.nav-logo:hover .l:nth-child(13){animation-delay:.36s}
-.nav-logo:hover .l:nth-child(14){animation-delay:.39s}
-.nav-logo:hover .l:nth-child(15){animation-delay:.42s}
-.nav-logo:hover .l:nth-child(16){animation-delay:.45s}
-.nav-logo:hover .l:nth-child(17){animation-delay:.48s}
-.nav-logo:hover .l:nth-child(18){animation-delay:.51s}
-.nav-logo:hover .l:nth-child(19){animation-delay:.54s}
-.nav-logo:hover .l:nth-child(20){animation-delay:.57s}
-.nav-logo:hover .l:nth-child(21){animation-delay:.60s}
-.nav-logo:hover .l:nth-child(22){animation-delay:.63s}
-.nav-logo:hover .l:nth-child(23){animation-delay:.66s}
-@keyframes jumpLetter{
-  0%  {transform:translateY(0);   color:var(--text);}
-  28% {transform:translateY(-9px);color:var(--accent);}
-  55% {transform:translateY(3px); color:var(--accent2);}
-  100%{transform:translateY(0);   color:var(--text);}
-}
-
 /* MOBILE */
 @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.about{grid-template-columns:1fr;gap:40px;}.about-image-wrap{max-width:320px;margin:0 auto;}.topics-header{grid-template-columns:1fr;}.topics-grid{grid-template-columns:1fr 1fr;}.videos-grid{grid-template-columns:1fr 1fr;}.platforms-grid{grid-template-columns:1fr 1fr 1fr;}.footer-top{grid-template-columns:1fr 1fr;}.stat{padding:18px 24px;}}
 @media(max-width:600px){.topics-grid,.videos-grid{grid-template-columns:1fr;}.platforms-grid{grid-template-columns:1fr 1fr;}.footer-top{grid-template-columns:1fr;}.hero-buttons{flex-direction:column;align-items:center;}.cursor,.cursor-ring{display:none;}}
@@ -256,9 +222,7 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
       box-shadow: 0 0 10px rgba(0,212,255,0.5), 0 0 24px rgba(0,212,255,0.2); padding: 2px;
       background: linear-gradient(135deg, #00d4ff, #7c3aed);"
     onerror="this.outerHTML='&lt;div class=&quot;nav-logo-icon&quot;&gt;HK&lt;/div&gt;'"/>
-    <span class="logo-text">
-      <span class="l">L</span><span class="l">e</span><span class="l">a</span><span class="l">r</span><span class="l">n</span><span class="l"> </span><span class="l">T</span><span class="l">e</span><span class="l">c</span><span class="l">h</span><span class="l"> </span><span class="l">W</span><span class="l">i</span><span class="l">t</span><span class="l">h</span><span class="l"> </span><span class="l">H</span><span class="l">i</span><span class="l">r</span><span class="l">d</span><span class="l">e</span><span class="l">s</span><span class="l">h</span>
-    </span>
+    Learn Tech With Hirdesh
   </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -313,11 +277,11 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
     <div class="xp-badge">⚡ 5+ Years Experience</div>
     <div class="about-avatar">
       <div class="about-avatar-inner"></div>
-      <img src="Hk.jpg" style="width:100%;height:auto;object-fit:contain;border-radius:20px;display:block;" alt="Engineer Hirdesh Kumar Yadav" onerror="this.style.display='none';this.parentElement.innerHTML+='<div class=\'about-avatar-letter\'>HK</div>'"/>
+      <img src="Hk.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:26px;display:block;" alt="Engineer Hirdesh Kumar Yadav" onerror="this.style.display='none';this.parentElement.innerHTML+='<div class=\'about-avatar-letter\'>HK</div>'"/>
     </div>
     <div class="about-tag">
       <span class="about-tag-icon">⚡</span>
-      <div class="about-tag-text"><strong>Er. Hirdesh Kumar Yadav</strong>Tech Educator &amp; YouTuber</div>
+      <div class="about-tag-text"><strong>Engineer Hirdesh Kumar Yadav</strong>Tech Educator &amp; YouTuber</div>
     </div>
   </div>
   <div class="reveal">
@@ -482,7 +446,7 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
       <div class="footer-col"><h4>More</h4><ul><li><a href="#about">About</a></li><li><a href="#newsletter">Newsletter</a></li><li><a href="https://hirdeshkumar15.netlify.app/" target="_blank">Portfolio</a></li><li><a href="#">Collaborate</a></li></ul></div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Learn Tech With Hirdesh. Built with <span>❤️</span> by Er. Hirdesh Kumar Yadav</p>
+      <p>© 2025 Learn Tech With Hirdesh. Built with <span>❤️</span> by Engineer Hirdesh Kumar Yadav</p>
       <div class="footer-socials">
         <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="footer-social-btn" title="YouTube">
     <img src="youtube-logo.svg" style="width:20px;height:20px;object-fit:contain;" alt="YouTube"/>
