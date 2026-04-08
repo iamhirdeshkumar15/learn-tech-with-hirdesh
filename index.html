@@ -31,10 +31,23 @@ nav::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;bac
 .nav-logo-img{width:34px;height:34px;border-radius:9px;object-fit:cover;border:1.5px solid rgba(0,212,255,.28);box-shadow:0 0 12px rgba(0,212,255,.18);}
 .nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:white;box-shadow:0 0 16px rgba(0,212,255,.3);}
 .nav-links{display:flex;gap:30px;list-style:none;}
-.nav-links a{font-size:.87rem;color:var(--muted);text-decoration:none;letter-spacing:.02em;transition:color .2s;position:relative;}
+.nav-links a{font-size:.87rem;color:var(--muted);text-decoration:none;letter-spacing:.02em;transition:color .2s;position:relative;display:inline-flex;gap:0;}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .25s;transform-origin:left;}
 .nav-links a:hover{color:var(--text);}
 .nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a .nl{display:inline-block;white-space:pre;}
+.nav-links a:hover .nl{animation:navJump .5s ease forwards;}
+.nav-links a:hover .nl:nth-child(1){animation-delay:.00s}
+.nav-links a:hover .nl:nth-child(2){animation-delay:.04s}
+.nav-links a:hover .nl:nth-child(3){animation-delay:.08s}
+.nav-links a:hover .nl:nth-child(4){animation-delay:.12s}
+.nav-links a:hover .nl:nth-child(5){animation-delay:.16s}
+.nav-links a:hover .nl:nth-child(6){animation-delay:.20s}
+.nav-links a:hover .nl:nth-child(7){animation-delay:.24s}
+.nav-links a:hover .nl:nth-child(8){animation-delay:.28s}
+.nav-links a:hover .nl:nth-child(9){animation-delay:.32s}
+.nav-links a:hover .nl:nth-child(10){animation-delay:.36s}
+@keyframes navJump{0%{transform:translateY(0);color:var(--muted);}30%{transform:translateY(-7px);color:var(--accent);}60%{transform:translateY(3px);color:var(--accent2);}100%{transform:translateY(0);color:var(--text);}}
 .nav-cta{background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(124,58,237,.08));border:1px solid rgba(0,212,255,.28);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.84rem;padding:8px 20px;border-radius:8px;cursor:pointer;transition:all .25s;text-decoration:none;letter-spacing:.02em;}
 .nav-cta:hover{background:var(--accent);color:var(--bg);box-shadow:0 0 24px rgba(0,212,255,.5);border-color:transparent;}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
@@ -261,13 +274,13 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
     </span>
   </a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#topics">Topics</a></li>
-    <li><a href="#videos">Videos</a></li>
-    <li><a href="#platforms">Community</a></li>
-    <li><a href="#newsletter">Newsletter</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="channel.html">Channel</a></li>
+    <li><a href="#about"><span class="nl">A</span><span class="nl">b</span><span class="nl">o</span><span class="nl">u</span><span class="nl">t</span></a></li>
+    <li><a href="#topics"><span class="nl">T</span><span class="nl">o</span><span class="nl">p</span><span class="nl">i</span><span class="nl">c</span><span class="nl">s</span></a></li>
+    <li><a href="#videos"><span class="nl">V</span><span class="nl">i</span><span class="nl">d</span><span class="nl">e</span><span class="nl">o</span><span class="nl">s</span></a></li>
+    <li><a href="#platforms"><span class="nl">C</span><span class="nl">o</span><span class="nl">m</span><span class="nl">m</span><span class="nl">u</span><span class="nl">n</span><span class="nl">i</span><span class="nl">t</span><span class="nl">y</span></a></li>
+    <li><a href="#newsletter"><span class="nl">N</span><span class="nl">e</span><span class="nl">w</span><span class="nl">s</span><span class="nl">l</span><span class="nl">e</span><span class="nl">t</span><span class="nl">t</span><span class="nl">e</span><span class="nl">r</span></a></li>
+    <li><a href="blog.html"><span class="nl">B</span><span class="nl">l</span><span class="nl">o</span><span class="nl">g</span></a></li>
+    <li><a href="channel.html"><span class="nl">C</span><span class="nl">h</span><span class="nl">a</span><span class="nl">n</span><span class="nl">n</span><span class="nl">e</span><span class="nl">l</span></a></li>
   </ul>
   <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="nav-cta">▶ Subscribe</a>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
@@ -289,10 +302,10 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
       <a href="#about" class="btn-secondary">Meet Hirdesh →</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><span class="stat-number">10K+</span><span class="stat-label">Subscribers</span></div>
-      <div class="stat"><span class="stat-number">100+</span><span class="stat-label">Video Tutorials</span></div>
-      <div class="stat"><span class="stat-number">5+</span><span class="stat-label">Years Teaching</span></div>
-      <div class="stat"><span class="stat-number">50K+</span><span class="stat-label">Minutes Watched</span></div>
+      <div class="stat"><span class="stat-number" data-stat="subs">—</span><span class="stat-label">Subscribers</span></div>
+      <div class="stat"><span class="stat-number" data-stat="videos">—</span><span class="stat-label">Video Tutorials</span></div>
+      <div class="stat"><span class="stat-number">1+</span><span class="stat-label">Years Teaching</span></div>
+      <div class="stat"><span class="stat-number" data-stat="views">—</span><span class="stat-label">Total Views</span></div>
     </div>
   </div>
   <div class="hero-scroll"><div class="scroll-line"></div>scroll</div>
@@ -310,7 +323,7 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
 <section class="about" id="about">
   <div class="about-image-wrap reveal">
     <div class="about-corner"></div>
-    <div class="xp-badge">⚡ 5+ Years Experience</div>
+    <div class="xp-badge">⚡ 1+ Years Experience</div>
     <div class="about-avatar">
       <div class="about-avatar-inner"></div>
       <img src="Hk.jpg" style="width:100%;height:auto;object-fit:contain;border-radius:20px;display:block;" alt="Engineer Hirdesh Kumar Yadav" onerror="this.style.display='none';this.parentElement.innerHTML+='<div class=\'about-avatar-letter\'>HK</div>'"/>
@@ -326,14 +339,21 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
     <p class="section-desc">I'm Engineer Hirdesh Kumar Yadav — a passionate computer engineer and educator dedicated to making technology accessible to everyone. Through in-depth tutorials and real-world examples, I break down complex concepts into simple, actionable lessons.</p>
     <p class="section-desc" style="margin-top:16px;">Whether you're a complete beginner or leveling up your skills, my goal is to give you the knowledge and confidence to build incredible things with tech.</p>
     <div class="about-skills">
-      <span class="skill-chip"><span>Python</span></span>
-      <span class="skill-chip"><span>JavaScript</span></span>
-      <span class="skill-chip"><span>DSA</span></span>
-      <span class="skill-chip"><span>Web Dev</span></span>
-      <span class="skill-chip"><span>AI/ML</span></span>
-      <span class="skill-chip"><span>System Design</span></span>
+      <span class="skill-chip"><span>Linux</span></span>
+      <span class="skill-chip"><span>Big Data</span></span>
+      <span class="skill-chip"><span>Hadoop Ecosystem</span></span>
+      <span class="skill-chip"><span>Apache Spark</span></span>
+      <span class="skill-chip"><span>Data Processing & Analytics</span></span>
       <span class="skill-chip"><span>DevOps</span></span>
+      <span class="skill-chip"><span>Power BI</span></span>
+      <span class="skill-chip"><span>Networking</span></span>
+      <span class="skill-chip"><span>Tableau</span></span>
+      <span class="skill-chip"><span>AI/ML</span></span>
+      <span class="skill-chip"><span>Cluster Computing</span></span> 
+      <span class="skill-chip"><span>JavaScript</span></span>
       <span class="skill-chip"><span>Cloud</span></span>
+      <span class="skill-chip"><span>Web Dev</span></span>
+        
     </div>
   </div>
 </section>
@@ -397,12 +417,91 @@ footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;ba
     <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="btn-secondary">View All Videos →</a>
   </div>
   <div class="videos-grid">
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v1">🐍</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">45:22</span></div><div class="video-info"><div class="video-tag">Python</div><div class="video-title">Python Full Course for Beginners 2024 — Zero to Hero</div><div class="video-meta"><span>👁 12.4K views</span><span>2 days ago</span></div></div></div>
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v2">🌐</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">1:12:05</span></div><div class="video-info"><div class="video-tag">Web Dev</div><div class="video-title">Build a Full Stack App with React &amp; Node.js — Complete Guide</div><div class="video-meta"><span>👁 8.7K views</span><span>1 week ago</span></div></div></div>
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v3">💡</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">38:14</span></div><div class="video-info"><div class="video-tag">DSA</div><div class="video-title">Top 10 DSA Patterns to Crack Any Coding Interview</div><div class="video-meta"><span>👁 21.3K views</span><span>2 weeks ago</span></div></div></div>
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v4">🤖</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">52:40</span></div><div class="video-info"><div class="video-tag">AI/ML</div><div class="video-title">Build Your First ML Model with Python — Step by Step</div><div class="video-meta"><span>👁 5.9K views</span><span>3 weeks ago</span></div></div></div>
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v5">☁️</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">29:55</span></div><div class="video-info"><div class="video-tag">DevOps</div><div class="video-title">Docker for Developers — Everything You Need to Know</div><div class="video-meta"><span>👁 9.1K views</span><span>1 month ago</span></div></div></div>
-    <div class="video-card reveal"><div class="video-thumb"><div class="video-thumb-bg v6">🏗️</div><div class="play-btn"><div class="play-triangle"></div></div><span class="video-duration">1:04:30</span></div><div class="video-info"><div class="video-tag">System Design</div><div class="video-title">How to Design a URL Shortener — System Design Interview</div><div class="video-meta"><span>👁 14.8K views</span><span>1 month ago</span></div></div></div>
+
+    <!-- BIG DATA — ACTIVE -->
+    <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="video-card reveal" style="text-decoration:none;color:inherit;">
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Big Data"/>
+        <div class="play-btn"><div class="play-triangle"></div></div>
+        <span class="video-duration" style="background:rgba(6,182,212,.85);">▶ Watch Now</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#06b6d4;border-color:rgba(6,182,212,.25);background:rgba(6,182,212,.08);">Big Data</div>
+        <div class="video-title">Big Data Series — Available Now on YouTube</div>
+        <div class="video-meta"><span>▶ Available Now</span><span>youtube.com</span></div>
+      </div>
+    </a>
+
+    <!-- LINUX — COMING SOON -->
+    <div class="video-card reveal" style="opacity:.5;cursor:not-allowed;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:12px;left:12px;z-index:5;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.07em;padding:4px 11px;border-radius:100px;">🔒 Coming Soon</div>
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(60%);" alt="Linux"/>
+        <span class="video-duration">— : —</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#f97316;border-color:rgba(249,115,22,.25);background:rgba(249,115,22,.08);">Linux</div>
+        <div class="video-title">Linux Series — Coming Soon</div>
+        <div class="video-meta"><span>⏳ Uploading soon</span><span>Stay tuned</span></div>
+      </div>
+    </div>
+
+    <!-- CLUSTER COMPUTING — COMING SOON -->
+    <div class="video-card reveal" style="opacity:.5;cursor:not-allowed;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:12px;left:12px;z-index:5;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.07em;padding:4px 11px;border-radius:100px;">🔒 Coming Soon</div>
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(60%);" alt="Cluster Computing"/>
+        <span class="video-duration">— : —</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#8b5cf6;border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.08);">Cluster Computing</div>
+        <div class="video-title">Cluster Computing Series — Coming Soon</div>
+        <div class="video-meta"><span>⏳ Uploading soon</span><span>Stay tuned</span></div>
+      </div>
+    </div>
+
+    <!-- DEVOPS — COMING SOON -->
+    <div class="video-card reveal" style="opacity:.5;cursor:not-allowed;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:12px;left:12px;z-index:5;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.07em;padding:4px 11px;border-radius:100px;">🔒 Coming Soon</div>
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(60%);" alt="DevOps"/>
+        <span class="video-duration">— : —</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#10b981;border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.08);">DevOps</div>
+        <div class="video-title">DevOps Series — Coming Soon</div>
+        <div class="video-meta"><span>⏳ Uploading soon</span><span>Stay tuned</span></div>
+      </div>
+    </div>
+
+    <!-- POWER BI — COMING SOON -->
+    <div class="video-card reveal" style="opacity:.5;cursor:not-allowed;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:12px;left:12px;z-index:5;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.07em;padding:4px 11px;border-radius:100px;">🔒 Coming Soon</div>
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(60%);" alt="Power BI"/>
+        <span class="video-duration">— : —</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#f59e0b;border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.08);">Power BI</div>
+        <div class="video-title">Power BI Tools Series — Coming Soon</div>
+        <div class="video-meta"><span>⏳ Uploading soon</span><span>Stay tuned</span></div>
+      </div>
+    </div>
+
+    <!-- NETWORKING — COMING SOON -->
+    <div class="video-card reveal" style="opacity:.5;cursor:not-allowed;pointer-events:none;position:relative;">
+      <div style="position:absolute;top:12px;left:12px;z-index:5;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.07em;padding:4px 11px;border-radius:100px;">🔒 Coming Soon</div>
+      <div class="video-thumb">
+        <img src="thumbnail1.png" style="width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(60%);" alt="Networking"/>
+        <span class="video-duration">— : —</span>
+      </div>
+      <div class="video-info">
+        <div class="video-tag" style="color:#3b82f6;border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.08);">Networking</div>
+        <div class="video-title">Networking Series — Coming Soon</div>
+        <div class="video-meta"><span>⏳ Uploading soon</span><span>Stay tuned</span></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -595,20 +694,36 @@ function toggleMenu(){
   if(!open)Object.assign(l.style,{flexDirection:'column',position:'fixed',top:'68px',left:'0',right:'0',background:'rgba(2,8,16,.98)',padding:'20px 5%',borderBottom:'1px solid rgba(0,212,255,.08)',backdropFilter:'blur(24px)',zIndex:'999'});
 }
 
-/* COUNTER */
-function animateCounters(){
-  document.querySelectorAll('.stat-number').forEach(el=>{
-    const target=el.textContent,num=parseFloat(target),suffix=target.replace(/[\d.]/g,'');
-    let s=0;const step=num/60;
-    const timer=setInterval(()=>{
-      s=Math.min(s+step,num);
-      el.textContent=(s>=1000?Math.round(s/1000)+'K':Math.round(s))+(suffix.replace('K',''));
-      if(s>=num){el.textContent=target;clearInterval(timer);}
-    },20);
-  });
+/* YOUTUBE API STATS */
+const YT_API_KEY   = 'AIzaSyD78QQbJN6AuDZb_2ivShEmaXjrCZqZWZQ';
+const YT_CHANNEL_ID = 'UCMazaozWzXJKzXj13N7Iy3g"';
+
+function formatNum(n){
+  if(n>=1000000) return (n/1000000).toFixed(1)+'M+';
+  if(n>=1000)    return (n/1000).toFixed(1)+'K+';
+  return n+'+';
 }
-const hObs=new IntersectionObserver(e=>{if(e[0].isIntersecting)animateCounters();},{threshold:.5});
-const hs=document.querySelector('.hero-stats');if(hs)hObs.observe(hs);
+function animateStat(el, finalText){
+  el.style.opacity='0';
+  el.textContent = finalText;
+  el.style.transition='opacity .6s ease';
+  setTimeout(()=>el.style.opacity='1', 80);
+}
+
+fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${YT_CHANNEL_ID}&key=${YT_API_KEY}`)
+  .then(r=>r.json())
+  .then(data=>{
+    const s = data.items[0].statistics;
+    animateStat(document.querySelector('[data-stat="subs"]'),   formatNum(parseInt(s.subscriberCount)));
+    animateStat(document.querySelector('[data-stat="videos"]'), formatNum(parseInt(s.videoCount)));
+    animateStat(document.querySelector('[data-stat="views"]'),  formatNum(parseInt(s.viewCount)));
+  })
+  .catch(()=>{
+    // fallback if API fails
+    document.querySelector('[data-stat="subs"]').textContent   = '—';
+    document.querySelector('[data-stat="videos"]').textContent = '—';
+    document.querySelector('[data-stat="views"]').textContent  = '—';
+  });
 
 /* TOPIC CARD 3D TILT */
 document.querySelectorAll('.topic-card').forEach(card=>{

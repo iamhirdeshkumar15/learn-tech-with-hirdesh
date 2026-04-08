@@ -22,18 +22,26 @@
   .cursor-ring{width:36px;height:36px;border:1.5px solid rgba(0,212,255,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .18s;mix-blend-mode:screen;}
 
   /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:18px 5%;background:rgba(5,10,20,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-  .nav-logo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
-  .nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:white;}
-  .nav-links{display:flex;gap:32px;list-style:none;}
-  .nav-links a{font-size:.9rem;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;}
-  .nav-links a.active,
-  .nav-links a:hover{color:var(--text);}
-  .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--green);}
-  .nav-cta{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:9px 22px;border-radius:6px;cursor:pointer;transition:all .2s;text-decoration:none;}
-  .nav-cta:hover{background:var(--accent);color:var(--bg);}
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 5%;background:rgba(2,8,16,.72);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(0,212,255,.07);transition:all .3s;}
+  nav.scrolled{padding:11px 5%;background:rgba(2,8,16,.96);}
+  nav::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.18),transparent);}
+  .nav-logo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;letter-spacing:-.01em;}
+  .nav-logo-img{width:45px;height:60px;border-radius:350%;object-fit:cover;border:1px solid var(--accent);box-shadow:0 0 10px rgba(0,212,255,.5),0 0 24px rgba(0,212,255,.2);padding:2px;background:linear-gradient(135deg,#00d4ff,#7c3aed);}
+  .nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:white;box-shadow:0 0 16px rgba(0,212,255,.3);}
+  .logo-text{display:inline-flex;gap:0;align-items:center;}
+  .logo-text .l{display:inline-block;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;white-space:pre;transition:transform .2s,color .2s;}
+  .nav-logo:hover .l{animation:jumpLetter .55s ease forwards;}
+  .nav-logo:hover .l:nth-child(1){animation-delay:.00s}.nav-logo:hover .l:nth-child(2){animation-delay:.03s}.nav-logo:hover .l:nth-child(3){animation-delay:.06s}.nav-logo:hover .l:nth-child(4){animation-delay:.09s}.nav-logo:hover .l:nth-child(5){animation-delay:.12s}.nav-logo:hover .l:nth-child(6){animation-delay:.15s}.nav-logo:hover .l:nth-child(7){animation-delay:.18s}.nav-logo:hover .l:nth-child(8){animation-delay:.21s}.nav-logo:hover .l:nth-child(9){animation-delay:.24s}.nav-logo:hover .l:nth-child(10){animation-delay:.27s}.nav-logo:hover .l:nth-child(11){animation-delay:.30s}.nav-logo:hover .l:nth-child(12){animation-delay:.33s}.nav-logo:hover .l:nth-child(13){animation-delay:.36s}.nav-logo:hover .l:nth-child(14){animation-delay:.39s}.nav-logo:hover .l:nth-child(15){animation-delay:.42s}.nav-logo:hover .l:nth-child(16){animation-delay:.45s}.nav-logo:hover .l:nth-child(17){animation-delay:.48s}.nav-logo:hover .l:nth-child(18){animation-delay:.51s}.nav-logo:hover .l:nth-child(19){animation-delay:.54s}.nav-logo:hover .l:nth-child(20){animation-delay:.57s}.nav-logo:hover .l:nth-child(21){animation-delay:.60s}.nav-logo:hover .l:nth-child(22){animation-delay:.63s}.nav-logo:hover .l:nth-child(23){animation-delay:.66s}
+  @keyframes jumpLetter{0%{transform:translateY(0);color:var(--text);}28%{transform:translateY(-9px);color:var(--accent);}55%{transform:translateY(3px);color:var(--accent2);}100%{transform:translateY(0);color:var(--text);}}
+  .nav-links{display:flex;gap:30px;list-style:none;}
+  .nav-links a{font-size:.87rem;color:var(--muted);text-decoration:none;letter-spacing:.02em;transition:color .2s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .25s;transform-origin:left;}
+  .nav-links a.active,.nav-links a:hover{color:var(--text);}
+  .nav-links a.active::after,.nav-links a:hover::after{transform:scaleX(1);}
+  .nav-cta{background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(124,58,237,.08));border:1px solid rgba(0,212,255,.28);color:var(--accent);font-family:'DM Sans',sans-serif;font-size:.84rem;padding:8px 20px;border-radius:8px;cursor:pointer;transition:all .25s;text-decoration:none;letter-spacing:.02em;}
+  .nav-cta:hover{background:var(--accent);color:var(--bg);box-shadow:0 0 24px rgba(0,212,255,.5);border-color:transparent;}
   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
-  .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;}
+  .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s;}
 
   /* PAGE WRAPPER */
   .page{max-width:780px;margin:0 auto;padding:110px 5% 80px;position:relative;z-index:1;}
@@ -182,12 +190,13 @@
   .toast.show{transform:translateX(0);}
 
   /* FOOTER */
-  footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 5%;}
+  footer{position:relative;z-index:1;border-top:1px solid rgba(0,212,255,.07);padding:28px 5%;background:rgba(2,8,16,.8);backdrop-filter:blur(12px);}
+  footer::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.18),transparent);}
   .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;}
-  .footer-inner p{font-size:.82rem;color:var(--muted);}
-  .footer-socials{display:flex;gap:8px;flex-wrap:wrap;}
-  .footer-social-btn{width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;transition:all .2s;text-decoration:none;}
-  .footer-social-btn:hover{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.3);transform:translateY(-2px);}
+  .footer-inner p{font-size:.8rem;color:var(--muted);}
+  .footer-socials{display:flex;gap:10px;flex-wrap:wrap;}
+  .footer-social-btn{width:36px;height:36px;background:rgba(10,22,40,.8);border:1px solid rgba(0,212,255,.1);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;text-decoration:none;backdrop-filter:blur(8px);}
+  .footer-social-btn:hover{background:rgba(0,212,255,.12);border-color:rgba(0,212,255,.35);transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,212,255,.2);}
 
   /* MOBILE */
   @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}}
@@ -202,8 +211,10 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="index.html" class="nav-logo">
-    <div class="nav-logo-icon">HK</div>
-    Learn Tech With Hirdesh
+    <img src="nav.png" class="nav-logo-img" alt="Hirdesh" onerror="this.outerHTML='&lt;div class=&quot;nav-logo-icon&quot;&gt;HK&lt;/div&gt;'"/>
+    <span class="logo-text">
+      <span class="l">L</span><span class="l">e</span><span class="l">a</span><span class="l">r</span><span class="l">n</span><span class="l"> </span><span class="l">T</span><span class="l">e</span><span class="l">c</span><span class="l">h</span><span class="l"> </span><span class="l">W</span><span class="l">i</span><span class="l">t</span><span class="l">h</span><span class="l"> </span><span class="l">H</span><span class="l">i</span><span class="l">r</span><span class="l">d</span><span class="l">e</span><span class="l">s</span><span class="l">h</span>
+    </span>
   </a>
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
@@ -338,16 +349,16 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <p>© 2025 Learn Tech With Hirdesh — <span style="color:var(--accent)">Engineer Hirdesh Kumar Yadav</span></p>
+    <p>© 2026 Learn Tech With Hirdesh — <span style="color:var(--accent)">Er. Hirdesh Kumar Yadav</span></p>
     <div class="footer-socials">
-      <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="footer-social-btn" title="YouTube">▶</a>
-      <a href="https://www.instagram.com/kumarhirdesh03s" target="_blank" class="footer-social-btn" title="Instagram">📸</a>
-      <a href="https://www.linkedin.com/in/iamhirdeshkumar15/" target="_blank" class="footer-social-btn" title="LinkedIn">💼</a>
-      <a href="https://github.com/iamhirdeshkumar15" target="_blank" class="footer-social-btn" title="GitHub">💻</a>
-      <a href="https://x.com/HirdeshKumar303" target="_blank" class="footer-social-btn" title="X">𝕏</a>
-      <a href="https://www.facebook.com/share/1KYs9i1G4B/" target="_blank" class="footer-social-btn" title="Facebook">👥</a>
-      <a href="https://whatsapp.com/channel/0029VbCiqrmFHWq73dJAPG2n" target="_blank" class="footer-social-btn" title="WhatsApp">💬</a>
-      <a href="https://hirdeshkumar15.netlify.app/" target="_blank" class="footer-social-btn" title="Portfolio">🌐</a>
+      <a href="https://youtube.com/@learn_tech_with_hirdesh?si=_CuZu_MVO_KQHzfi" target="_blank" class="footer-social-btn" title="YouTube"><img src="youtube-logo.svg" style="width:20px;height:20px;object-fit:contain;" alt="YouTube"/></a>
+      <a href="https://www.instagram.com/kumarhirdesh03s" target="_blank" class="footer-social-btn" title="Instagram"><img src="instagram-1.svg" style="width:20px;height:20px;object-fit:contain;" alt="Instagram"/></a>
+      <a href="https://www.linkedin.com/in/iamhirdeshkumar15/" target="_blank" class="footer-social-btn" title="LinkedIn"><img src="linkedin.svg" style="width:20px;height:20px;object-fit:contain;" alt="LinkedIn"/></a>
+      <a href="https://github.com/iamhirdeshkumar15" target="_blank" class="footer-social-btn" title="GitHub"><img src="github-color.svg" style="width:20px;height:20px;object-fit:contain;" alt="GitHub"/></a>
+      <a href="https://x.com/HirdeshKumar303" target="_blank" class="footer-social-btn" title="X Twitter"><img src="twitter.svg" style="width:20px;height:20px;object-fit:contain;" alt="X Twitter"/></a>
+      <a href="https://www.facebook.com/share/1KYs9i1G4B/" target="_blank" class="footer-social-btn" title="Facebook"><img src="facebook.svg" style="width:20px;height:20px;object-fit:contain;" alt="Facebook"/></a>
+      <a href="https://whatsapp.com/channel/0029VbCiqrmFHWq73dJAPG2n" target="_blank" class="footer-social-btn" title="WhatsApp"><img src="whatsapp-1.svg" style="width:20px;height:20px;object-fit:contain;" alt="WhatsApp"/></a>
+      <a href="https://hirdeshkumar15.netlify.app/" target="_blank" class="footer-social-btn" title="Portfolio"><img src="portfolio-bag.svg" style="width:20px;height:20px;object-fit:contain;" alt="Portfolio"/></a>
     </div>
   </div>
 </footer>
@@ -599,8 +610,9 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.le
 function toggleMenu(){
   const l=document.querySelector('.nav-links'),open=l.style.display==='flex';
   l.style.display=open?'none':'flex';
-  if(!open) Object.assign(l.style,{flexDirection:'column',position:'fixed',top:'68px',left:'0',right:'0',background:'rgba(5,10,20,.98)',padding:'20px 5%',borderBottom:'1px solid rgba(0,212,255,.12)',backdropFilter:'blur(20px)',zIndex:'999'});
+  if(!open) Object.assign(l.style,{flexDirection:'column',position:'fixed',top:'68px',left:'0',right:'0',background:'rgba(2,8,16,.98)',padding:'20px 5%',borderBottom:'1px solid rgba(0,212,255,.08)',backdropFilter:'blur(24px)',zIndex:'999'});
 }
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
 
 // ═══════════════ MODAL BG CLOSE ═══════════════
 document.getElementById('addModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAddModal();});
